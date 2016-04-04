@@ -16,6 +16,7 @@ $(document).ready(function() {
     // Delete User link click
     $('#userList table tbody').on('click', 'td a.linkdeleteuser', deleteUser);
 
+    $('#btnEditUser').on('click', editUser);
 });
 
 // Functions =============================================================
@@ -67,6 +68,18 @@ function showUserInfo(event) {
     $('#userInfoGender').text(thisUserObject.gender);
     $('#userInfoLocation').text(thisUserObject.location);
 
+    //Display user to edit
+    $('#editUserToEdit').text(thisUserObject.username);
+
+    //Populate data
+    $('#editUserId').val(thisUserObject._id);
+    $('#editUserUserName').val(thisUserObject.username);
+    $('#editUserEmail').val(thisUserObject.email);
+    $('#editUserFullName').val(thisUserObject.fullname);
+    $('#editUserAge').val(thisUserObject.age);
+    $('#editUserGender').val(thisUserObject.gender);
+    $('#editUserLocation').val(thisUserObject.location);
+    
 }
 
 function addUser(event) {
@@ -149,3 +162,63 @@ function deleteUser(event) {
         });
 
 }
+
+//Edit user
+function editUser(event) {
+
+    event.preventDefault();
+
+    //Basic client-side form validation / counts # of errors.
+    var errorCount = 0;
+    $('#editUser input').each(function(index,val) {
+        if ($(this).val() === '' ) {
+            errorCount++;
+        }
+    });
+
+    //Makes sure errorCount is zero
+    if (errorCount === 0) {
+
+        //Compile user info into one object
+        var user = {
+            'username': $('#editUser fieldset input#editUserUserName').val(),
+            'email': $('#editUser fieldset input#editUserEmail').val(),
+            'fullname': $('#editUser fieldset input#editUserFullName').val(),
+            'age': $('#editUser fieldset input#editUserAge').val(),
+            'location': $('#editUser fieldset input#editUserLocation').val(),
+            'gender': $('#editUser fieldset input#editUserGender').val(),
+        }
+
+        // Use AJAX to post the object to the adduser service
+        $.ajax({
+            type: 'PUT',
+            data: user,
+            url: '/users/edituser/' + $('#editUser fieldset input#editUserId').val(),
+            dataType: 'JSON'
+        }).done(function(response) {
+            
+            //If blank, successful
+            if (response.msg === '') {
+                
+                //Clear form
+                $('#editUser fieldset input').val('');
+                $('#editUserToEdit').text('');
+                //Update table
+                populateTable();
+
+            } else {
+
+                //Show error if something went wrong
+                alert('Error: ' + response.msg);
+
+            }
+        });
+
+    // If form not valid (preprocessed)
+    } else {
+        //Error out
+        alert('Please fill in all fields');
+        return false;
+    }
+};
+

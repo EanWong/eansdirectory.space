@@ -30,6 +30,20 @@ router.post('/adduser', function(req, res) {
 });
 
 /*
+ * PUT to edituser.
+ */
+router.put('/edituser/:id', function(req, res) {
+    var db = req.db;
+    var collection = db.get('userlist');
+    var userToUpdate = req.params.id;
+    collection.update({'_id': userToUpdate},req.body, function(err, result){
+        res.send(
+            (err === null) ? { msg: '' } : { msg: err}
+        );
+    });
+});
+
+/*
  * DELETE to removeuser.
  */
  router.delete('/deleteuser/:id', function(req, res) {

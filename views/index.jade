@@ -47,9 +47,29 @@ block content
             input#inputUserAge(type='text', placeholder='Age')
             br
             input#inputUserLocation(type='text', placeholder='Location')
-            input#inputUserGender(type='text', placeholder='gender')
+            input#inputUserGender(type='text', placeholder='Gender')
             br
             button#btnAddUser Add User
     // /ADD USER
+
+    // Edit USER
+    h2 Edit User - Click on a user to edit
+    #editUser
+        fieldset
+            strong Name:
+            |  <span id='editUserToEdit'></span>
+            br
+            input#editUserUserName(type='text', placeholder='Username')
+            input#editUserEmail(type='text', placeholder='Email')
+            br
+            input#editUserFullName(type='text', placeholder='Full Name')
+            input#editUserAge(type='text', placeholder='Age')
+            br
+            input#editUserLocation(type='text', placeholder='Location')
+            input#editUserGender(type='text', placeholder='Gender')
+            input#editUserId(type='hidden')
+            br
+            button#btnEditUser Edit User
+    // /Edit USER
 
   // / WRAPPER
